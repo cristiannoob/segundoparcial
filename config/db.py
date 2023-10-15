@@ -11,4 +11,4 @@ app.secret_key = "12345"
 
 db = SQLAlchemy(app)
 
-ma = Marshmallow(app)
+ma = Marshmallow(app) 

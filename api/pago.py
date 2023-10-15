@@ -17,14 +17,14 @@ def pagos():
 @ruta_pagos.route("/savepagos", methods=["POST"])
 def save():
     id = request.json["id"]
-    id_viaje = request.json["idviaje"]
-    id_registro = request.json["idregistro"]
-    new_pasajero = Pasajero(
+    tipo_pago = request.json["tipopago"]
+    cantidad = request.json["cantidadpago"]
+    new_pago = Pago(
         id,
-        id_viaje,
-        id_registro,
+        tipo_pago,
+        cantidad,
     )
-    db.session.add(new_pasajero)
+    db.session.add(new_pago)
     db.session.commit()
     return "Datos guardado con exito"
 
@@ -32,14 +32,14 @@ def save():
 @ruta_pagos.route("/updatepasajero", methods=["PUT"])
 def Update():
     id = request.json["id"]
-    id_viaje = request.json["idviaje"]
-    id_registro = request.json["idregistro"]
-    pasajero = Pasajero.query.get(id)
-    if pasajero:
-        print(pasajero)
+    tipo_pago = request.json["tipopago"]
+    cantidad = request.json["cantidadpago"]
+    pasajero = Pago.query.get(id)
+    if pagos:
+        print(pagos)
         pasajero.id = id
-        pasajero.idviaje = id_viaje
-        pasajero.idregistro = id_registro
+        pasajero.tipopago = tipo_pago
+        pasajero.cantidadpago = cantidad
         db.session.commit()
         return "Datos actualizado con exitos"
     else:
@@ -48,9 +48,9 @@ def Update():
 
 @ruta_pagos.route("/deletepasajero/<id>", methods=["GET"])
 def eliminar(id):
-    pasajero = Pasajero.query.get(id)
+    pasajero = Pago.query.get(id)
     db.session.delete(pasajero)
     db.session.commit()
     return jsonify(
-        pasajero_schema.dump(pasajero),
+        pagos_schema.dump(pasajero),
     )
