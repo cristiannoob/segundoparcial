@@ -8,7 +8,11 @@ class Vehiculo(db.Model):
     destino = db.Column(db.String(50))
     preferencias = db.Column(db.String(50))
 
-
+    def __init__ (self, origen, destino, preferencias) :
+        self.origen = origen
+        self.destino = destino
+        self.preferencias = preferencias
+        
 with app.app_context():
     db.create_all()
 

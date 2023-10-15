@@ -6,8 +6,11 @@ class Registro(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50))
     correo = db.Column(db.String(50))
-    edad = db.Column(db.Integer(50))
+    
 
+    def __init__ (self, nombre, correo, edad) :
+        self.nombre = nombre
+        self.correo = correo
 
 with app.app_context():
     db.create_all()
