@@ -4,23 +4,21 @@ from models.pago import Pago, PagosSchema
 
 ruta_pagos = Blueprint("ruta_pagos", __name__)
 
-pagos_schema = PagosSchema()
-pasajeros_schema = PagosSchema(many=True)
+pago_schema = PagosSchema()
+pagos_schema = PagosSchema(many=True)
 
 @ruta_pagos.route("/pagos", methods=["GET"])
 def pagos():
-    resultall = pagos.query.all()  # Select * from Clientes
+    resultall = Pago.query.all() 
     resultado_pago = pagos_schema.dump(resultall)
     return jsonify(resultado_pago)
 
 
 @ruta_pagos.route("/savepagos", methods=["POST"])
 def save():
-    id = request.json["id"]
-    tipo_pago = request.json["tipopago"]
-    cantidad = request.json["cantidadpago"]
+    tipo_pago = request.json["tipo_pago"]
+    cantidad = request.json["cantidad"]
     new_pago = Pago(
-        id,
         tipo_pago,
         cantidad,
     )
@@ -29,28 +27,28 @@ def save():
     return "Datos guardado con exito"
 
 
-@ruta_pagos.route("/updatepasajero", methods=["PUT"])
+@ruta_pagos.route("/updatepago", methods=["PUT"])
 def Update():
     id = request.json["id"]
-    tipo_pago = request.json["tipopago"]
-    cantidad = request.json["cantidadpago"]
-    pasajero = Pago.query.get(id)
-    if pagos:
-        print(pagos)
-        pasajero.id = id
-        pasajero.tipopago = tipo_pago
-        pasajero.cantidadpago = cantidad
+    tipo_pago = request.json["tipo_pago"]
+    cantidad = request.json["cantidad"]
+    pago = Pago.query.get(id)
+    if pago:
+        print(pago)
+        pago.id = id
+        pago.tipo_pago = tipo_pago
+        pago.cantidad= cantidad
         db.session.commit()
         return "Datos actualizado con exitos"
     else:
         return "Error"
 
 
-@ruta_pagos.route("/deletepasajero/<id>", methods=["DELETE"])
+@ruta_pagos.route("/deletepago/<id>", methods=["DELETE"])
 def eliminar(id):
-    pasajero = Pago.query.get(id)
-    db.session.delete(pasajero)
+    pagos = Pago.query.get(id)
+    db.session.delete(pagos)
     db.session.commit()
     return jsonify(
-        pagos_schema.dump(pasajero),
+        pago_schema.dump(pagos),
     )

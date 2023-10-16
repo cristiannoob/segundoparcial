@@ -4,25 +4,25 @@ from models.vehiculo import Vehiculo, VehiculosSchema
 
 ruta_vehiculos = Blueprint("ruta_vehiculos", __name__)
 
-vehiculos_schema = VehiculosSchema()
-vehiculos_schema = VehiculosSchema(many=True)
+Vehiculo_schema = VehiculosSchema()
+Vehiculos_schema = VehiculosSchema(many=True)
 
 @ruta_vehiculos.route("/vehiculos", methods=["GET"])
-def vehiculos():
-    resultall = vehiculos.query.all()  # Select * from Clientes
-    resultado_vehiculo = vehiculos_schema.dump(resultall)
+def vehiculo():
+    resultall = Vehiculo.query.all()  
+    resultado_vehiculo = Vehiculos_schema.dump(resultall)
     return jsonify(resultado_vehiculo)
 
 
 @ruta_vehiculos.route("/savevehiculos", methods=["POST"])
-def save():
-    id = request.json["id"]
-    origen = request.json["origen_i"]
-    destino = request.json["destino_f"]
+def savevehiculos():
+    origen = request.json["origen"]
+    destino = request.json["destino"]
+    preferencias = request.json["preferencias"]
     new_vehiculo = Vehiculo(
-        id,
         origen,
         destino,
+        preferencias
     )
     db.session.add(new_vehiculo)
     db.session.commit()
@@ -30,16 +30,18 @@ def save():
 
 
 @ruta_vehiculos.route("/updatevehiculo", methods=["PUT"])
-def Update():
+def Updatevehiculo():
     id = request.json["id"]
-    origen = request.json["origen_i"]
-    destino = request.json["destino_f"]
+    origen = request.json["origen"]
+    destino = request.json["destino"]
+    preferencias = request.json["preferencias"]
     vehiculo = Vehiculo.query.get(id)
     if vehiculo:
         print(vehiculo)
         vehiculo.id = id
-        vehiculo.origen_i = origen
-        ruta_vehiculos.cantidadpago = destino
+        vehiculo.origen = origen
+        vehiculo.destino = destino
+        vehiculo.preferencias = preferencias
         db.session.commit()
         return "Datos actualizado con exitos"
     else:
@@ -48,9 +50,9 @@ def Update():
 
 @ruta_vehiculos.route("/deletevehiculo/<id>", methods=["DELETE"])
 def eliminar(id):
-    pasajero = Vehiculo.query.get(id)
-    db.session.delete(vehiculos)
+    vehiculo = Vehiculo.query.get(id)
+    db.session.delete(vehiculo)
     db.session.commit()
     return jsonify(
-        vehiculos_schema.dump(vehiculos),
+        Vehiculo_schema.dump(vehiculo),
     )

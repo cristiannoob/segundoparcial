@@ -5,7 +5,7 @@ class Reporte(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     viaje_realizados = db.Column(db.String(50))
-    ingresos = db.Column(db.Integer)
+    ingresos = db.Column(db.String(50))
 
     def __init__ (self, viaje_realizados, ingresos) :
         self.viaje_realizados = viaje_realizados
@@ -19,6 +19,6 @@ class ReportesSchema(ma.Schema):
     class Meta:
         fields = (
             "id",
-            "viajes_realizados",
+            "viaje_realizados",
             "ingresos",
         )

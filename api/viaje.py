@@ -5,23 +5,21 @@ from models.viaje import Viaje, ViajesSchema
 ruta_viaje = Blueprint("ruta_viaje", __name__)
 
 viaje_schema = ViajesSchema()
-viaje_schema = ViajesSchema(many=True)
+viajes_schema = ViajesSchema(many=True)
 
 @ruta_viaje.route("/viaje", methods=["GET"])
 def viaje():
     resultall = Viaje.query.all()  
-    resultado_viaje = viaje_schema.dump(resultall)
+    resultado_viaje = viajes_schema.dump(resultall)
     return jsonify(resultado_viaje)
 
 
 @ruta_viaje.route("/saveviaje", methods=["POST"])
-def save():
-    id = request.json["id"]
+def saveviaje():
     hora_ini = request.json["hora_ini"]
     hora_fin = request.json["hora_fin"]
     ruta = request.json["ruta"]
     new_viaje = Viaje(
-        id,
         hora_ini,
         hora_fin,
         ruta                       
@@ -58,3 +56,17 @@ def eliminar(id):
     return jsonify(
         viaje_schema.dump(viaje),
     )
+
+@app.route('/dostablas', methods=['POST'])
+def dostablas():
+    datos = {}
+    resultado = db.session.query(Viaje, Pasajero).\
+        select_from(Viaje).join(Pasajero).all()
+    i=0
+    for Viaje, Pasajero in resultado:
+        i+=1
+        datos[i]={
+            'viaje': Viaje.id,
+            'pasajero': Pasajero.id
+        }
+    return datos

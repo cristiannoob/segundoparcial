@@ -16,13 +16,13 @@ def pasajero():
 
 @ruta_pasajeros.route("/savepasajero", methods=["POST"])
 def save():
-    id = request.json["id"]
-    id_viaje = request.json["idviaje"]
-    id_registro = request.json["idregistro"]
+    id_viaje = request.json["id_viaje"]
+    nombre = request.json["nombre"]
+    correo = request.json["correo"]
     new_pasajero = Pasajero(
-        id,
         id_viaje,
-        id_registro,
+        nombre,
+        correo
     )
     db.session.add(new_pasajero)
     db.session.commit()
@@ -33,13 +33,15 @@ def save():
 def Update():
     id = request.json["id"]
     id_viaje = request.json["idviaje"]
-    id_registro = request.json["idregistro"]
+    nombre = request,json["nombre"]
+    correo = request.json["correo"]
     pasajero = Pasajero.query.get(id)
     if pasajero:
         print(pasajero)
         pasajero.id = id
         pasajero.idviaje = id_viaje
-        pasajero.idregistro = id_registro
+        pasajero.nombre = nombre
+        pasajero.correo = correo
         db.session.commit()
         return "Datos actualizado con exitos"
     else:

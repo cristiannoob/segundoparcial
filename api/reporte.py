@@ -5,23 +5,21 @@ from models.reporte import Reporte, ReportesSchema
 ruta_reporte = Blueprint("ruta_reporte", __name__)
 
 reporte_schema = ReportesSchema()
-reporte_schema = ReportesSchema(many=True)
+reportes_schema = ReportesSchema(many=True)
 
 @ruta_reporte.route("/reporte", methods=["GET"])
 def reporte():
-    resultall = reporte.query.all()  
-    resultado_reporte = reporte_schema.dump(resultall)
+    resultall = Reporte.query.all()  
+    resultado_reporte = reportes_schema.dump(resultall)
     return jsonify(resultado_reporte)
 
 
 @ruta_reporte.route("/savereporte", methods=["POST"])
 def save():
-    id = request.json["id"]
-    viaje_realizado = request.json["viaje_realizado"]
+    viaje_realizados = request.json["viaje_realizados"]
     ingresos = request.json["ingresos"]
     new_reporte = Reporte(
-        id,
-        viaje_realizado,
+        viaje_realizados,
         ingresos
     )
     db.session.add(new_reporte)
@@ -32,13 +30,13 @@ def save():
 @ruta_reporte.route("/updatereporte", methods=["PUT"])
 def Update():
     id = request.json["id"]
-    viaje_realizado = request.json["viaje_realizado"]
+    viaje_realizados = request.json["viaje_realizados"]
     ingresos = request.json["ingresos"]
     reporte = Reporte.query.get(id)
     if reporte:
         print(reporte)
         reporte.id = id
-        reporte.viaje_realizado = viaje_realizado
+        reporte.viaje_realizados = viaje_realizados
         ruta_reporte.ingresos = ingresos
         db.session.commit()
         return "Datos actualizado con exitos"

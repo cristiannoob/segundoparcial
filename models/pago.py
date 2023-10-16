@@ -5,7 +5,7 @@ class Pago(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     tipo_pago= db.Column(db.String(50))
-    cantidad = db.Column(db.Integer)
+    cantidad = db.Column(db.String(50))
 
     def __init__ (self, tipo_pago, cantidad) :
         self.tipo_pago = tipo_pago
@@ -19,5 +19,6 @@ class PagosSchema(ma.Schema):
     class Meta:
         fields = (
             "id",
-            "id_viaje",
+            "tipo_pago",
+            "cantidad"
         )
