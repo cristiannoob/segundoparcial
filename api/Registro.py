@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, json
 from config.db import db, app, ma
 from models.registro import Registro, RegistrosSchema
 
-ruta_registro = Blueprint("ruta_pasajeros", __name__)
+ruta_registro = Blueprint("ruta_registro", __name__)
 
 registro_schema = RegistrosSchema()
 registro_schema = RegistrosSchema(many=True)

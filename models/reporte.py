@@ -5,7 +5,7 @@ class Reporte(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     viaje_realizados = db.Column(db.String(50))
-    ingresos = db.Column(db.Integer(50))
+    ingresos = db.Column(db.Integer)
 
     def __init__ (self, viaje_realizados, ingresos) :
         self.viaje_realizados = viaje_realizados

@@ -46,7 +46,7 @@ def Update():
         return "Error"
 
 
-@ruta_pagos.route("/deletepasajero/<id>", methods=["GET"])
+@ruta_pagos.route("/deletepasajero/<id>", methods=["DELETE"])
 def eliminar(id):
     pasajero = Pago.query.get(id)
     db.session.delete(pasajero)
