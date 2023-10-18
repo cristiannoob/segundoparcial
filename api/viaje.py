@@ -16,10 +16,12 @@ def viaje():
 
 @ruta_viaje.route("/saveviaje", methods=["POST"])
 def saveviaje():
+    id_pasajero = request.json["id_pasajero"]
     hora_ini = request.json["hora_ini"]
     hora_fin = request.json["hora_fin"]
     ruta = request.json["ruta"]
     new_viaje = Viaje(
+        id_pasajero,
         hora_ini,
         hora_fin,
         ruta                       
@@ -32,6 +34,7 @@ def saveviaje():
 @ruta_viaje.route("/updateviaje", methods=["PUT"])
 def Update():
     id = request.json["id"]
+    id_pasajero = request.json["id_pasajero"]
     hora_ini = request.json["hora_ini"]
     hora_fin = request.json["hora_fin"]
     ruta = request.json["ruta"]
@@ -39,6 +42,7 @@ def Update():
     if viaje:
         print(viaje)
         viaje.id = id
+        viaje.id_pasajero = id_pasajero
         viaje.hora_ini = hora_ini
         viaje.hora_fin = hora_fin
         viaje.ruta = ruta
@@ -57,16 +61,3 @@ def eliminar(id):
         viaje_schema.dump(viaje),
     )
 
-@app.route('/dostablas', methods=['POST'])
-def dostablas():
-    datos = {}
-    resultado = db.session.query(Viaje, Pasajero).\
-        select_from(Viaje).join(Pasajero).all()
-    i=0
-    for Viaje, Pasajero in resultado:
-        i+=1
-        datos[i]={
-            'viaje': Viaje.id,
-            'pasajero': Pasajero.id
-        }
-    return datos

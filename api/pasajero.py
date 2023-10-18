@@ -16,11 +16,9 @@ def pasajero():
 
 @ruta_pasajeros.route("/savepasajero", methods=["POST"])
 def save():
-    id_viaje = request.json["id_viaje"]
     nombre = request.json["nombre"]
     correo = request.json["correo"]
     new_pasajero = Pasajero(
-        id_viaje,
         nombre,
         correo
     )
@@ -32,14 +30,12 @@ def save():
 @ruta_pasajeros.route("/updatepasajero", methods=["PUT"])
 def Update():
     id = request.json["id"]
-    id_viaje = request.json["idviaje"]
-    nombre = request,json["nombre"]
+    nombre = request.json["nombre"]
     correo = request.json["correo"]
     pasajero = Pasajero.query.get(id)
     if pasajero:
         print(pasajero)
         pasajero.id = id
-        pasajero.idviaje = id_viaje
         pasajero.nombre = nombre
         pasajero.correo = correo
         db.session.commit()
@@ -56,3 +52,17 @@ def eliminar(id):
     return jsonify(
         pasajero_schema.dump(pasajero),
     )
+
+@app.route('/dostablas', methods=['POST'])
+def dostablas():
+    datos = {}
+    resultado = db.session.query(Pasajero, Viaje ).\
+        select_from(Pasajero).join(Viaje).all()
+    i=0
+    for Pasajero, Viaje in resultado:
+        i+=1
+        datos[i]={
+            'pasajero': Pasajero.id,
+            'viaje': Viaje.id         
+        }
+    return datos

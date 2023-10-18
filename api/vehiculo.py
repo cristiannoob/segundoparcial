@@ -19,10 +19,12 @@ def savevehiculos():
     origen = request.json["origen"]
     destino = request.json["destino"]
     preferencias = request.json["preferencias"]
+    disponibilidad = request.json["disponibilidad"]
     new_vehiculo = Vehiculo(
         origen,
         destino,
-        preferencias
+        preferencias,
+        disponibilidad
     )
     db.session.add(new_vehiculo)
     db.session.commit()
@@ -34,7 +36,8 @@ def Updatevehiculo():
     id = request.json["id"]
     origen = request.json["origen"]
     destino = request.json["destino"]
-    preferencias = request.json["preferencias"]
+    preferencias = request.json["preferencias"]   
+    disponibilidad = request.json["disponibilidad"]
     vehiculo = Vehiculo.query.get(id)
     if vehiculo:
         print(vehiculo)
@@ -42,6 +45,7 @@ def Updatevehiculo():
         vehiculo.origen = origen
         vehiculo.destino = destino
         vehiculo.preferencias = preferencias
+        vehiculo.disponibilidad = disponibilidad
         db.session.commit()
         return "Datos actualizado con exitos"
     else:
